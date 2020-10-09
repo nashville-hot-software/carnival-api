@@ -83,9 +83,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'carnival_api',
         'USER': 'postgres',
-        'PASSWORD': '871337',
-        'HOST': 'localhost',
-        'PORT': '',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
