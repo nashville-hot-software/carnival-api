@@ -4,7 +4,7 @@ from django.urls import reverse
 
 class OilChangeLog(models.Model):
     
-    vehicle = models.ForeignKey(Vehicle, related_name="vehicle", on_delete=models.CASCADE)
+    # vehicle = models.ForeignKey(Vehicle, related_name="vehicle", on_delete=models.CASCADE)
     oil_change_date = models.DateField(null=False, default="2000-01-01")
 
     class Meta:
