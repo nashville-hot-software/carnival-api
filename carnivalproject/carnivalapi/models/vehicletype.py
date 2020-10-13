@@ -1,20 +1,21 @@
 from django.db import models
 from django.urls import reverse
-from .user import User
+# from .bodytype import BodyType
+# from .vehiclemake import VehicleMake
+# from .vehiclemodel import VehicleModel
 
-class Friend(models.Model):
+class VehicleType(models.Model):
     
-    sender = models.ForeignKey(User, related_name="sender", on_delete = models.CASCADE)
-    receiver = models.ForeignKey(User, related_name="receiver", on_delete = models.CASCADE)
-    requestPending = models.BooleanField(null=False, default=0)
-    requestAccepted = models.BooleanField(null=False, default=0)
+    # body_type = models.ForeignKey(BodyType, related_name="body type", on_delete = models.CASCADE)
+    # make = models.ForeignKey(VehicleMake, related_name="vehicle make", on_delete = models.CASCADE)
+    # model = models.ForeignKey(VehicleModel, related_name="Vehicle Model", on_delete = models.CASCADE)
 
     class Meta:
-        verbose_name = ("Friend")
-        verbose_name_plural = ("Friends")        
+        verbose_name = ("Vehicle Type")
+        verbose_name_plural = ("Vehicle Types")        
         
     def __str__(self):
-        return f"Sender ID: {self.sender} Receiver ID: {self.receiver}"
+        return f"Vehicle Type ID: {self.pk}"
     
     def get_absolute_url(self):
-        return reverse("friend_detail", kwargs={"pk": self.pk})
+        return reverse("vehicle_type_detail", kwargs={"pk": self.pk})
