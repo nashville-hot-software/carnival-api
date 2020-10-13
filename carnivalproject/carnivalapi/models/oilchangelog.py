@@ -1,20 +1,18 @@
 from django.db import models
 from django.urls import reverse
-from .user import User
+# from .vehicle import Vehicle
 
-class Friend(models.Model):
+class OilChangeLog(models.Model):
     
-    sender = models.ForeignKey(User, related_name="sender", on_delete = models.CASCADE)
-    receiver = models.ForeignKey(User, related_name="receiver", on_delete = models.CASCADE)
-    requestPending = models.BooleanField(null=False, default=0)
-    requestAccepted = models.BooleanField(null=False, default=0)
+    vehicle = models.ForeignKey(Vehicle, related_name="vehicle", on_delete=models.CASCADE)
+    oil_change_date = models.DateField(null=False, default="2000-01-01")
 
     class Meta:
-        verbose_name = ("Friend")
-        verbose_name_plural = ("Friends")        
+        verbose_name = ("Oil Change")
+        verbose_name_plural = ("Oil Changes")        
         
     def __str__(self):
-        return f"Sender ID: {self.sender} Receiver ID: {self.receiver}"
+        return f"Oil Change ID: {self.pk}"
     
     def get_absolute_url(self):
-        return reverse("friend_detail", kwargs={"pk": self.pk})
+        return reverse("oil_change_detail", kwargs={"pk": self.pk})
