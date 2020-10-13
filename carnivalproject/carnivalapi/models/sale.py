@@ -2,6 +2,9 @@ from django.db import models
 from django.urls import reverse
 # from .saletype import SaleType
 # from .vehicle import Vehicle
+# from .employee import Employee
+# from .customer import Customer
+# from .dealership import Dealership
 
 class Sale(models.Model):
     
