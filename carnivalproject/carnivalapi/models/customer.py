@@ -5,7 +5,9 @@ from django.contrib.auth.models import User
 
 class customer(models.Model):
 
-first_name = models.CharField(null=True, max_length=20)
+    first_name = models.CharField(null=True, max_length=20)
+
+
 last_name = models.CharField(null=True, max_length=20)
 email = models.EmailField(max_length=254)
 phone = models.PhoneField(blank=True, help_text='Contact phone number')
