@@ -1,0 +1,6 @@
+
+
+
+
+class vehiclemake(models.Model): 
+    
