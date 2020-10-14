@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
-
+from .employeetype import EmployeeType
 
 class employee(models.Model):
 
@@ -12,4 +12,16 @@ last_name = models.CharField(null=True, max_length=20)
 email_address = models.EmailField(max_length=254)
 phone = models.PhoneField(null=True, help_text='Contact phone number')
 employee_type_id = models.ForeignKey(employee, on_delete=models.CASCADE)
-isActive = models.CharField(null=True, max_length=20)
+isActive = models.BooleanField(null=True, max_length=20)
+
+
+class Meta:
+
+    verbose_name = ("Employee")
+    verbose_name_plural = ("Employees")
+
+    def __str__(self):
+        return f"Employee ID: {self.pk}"
+
+    def get_absolute_url(self):
+        return reverse("employee_detail", kwargs={"pk": self.pk})
