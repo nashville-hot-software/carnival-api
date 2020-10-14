@@ -1,13 +1,13 @@
 from django.db import models
 from django.urls import reverse
-# from .sale import Sale
+from .sale import Sale
 
 class AccountReceivable(models.Model):
     
-    credit_amount = models.DecimalField(max_digits=6, decimal_places=2, null=True)
-    debit_amount = models.DecimalField(max_digits=6, decimal_places=2, null=True)
+    credit_amount = models.DecimalField(max_digits=8, decimal_places=2, null=True)
+    debit_amount = models.DecimalField(max_digits=8, decimal_places=2, null=True)
     date_received = models.DateField(null=True)
-    # sale_id = models.ForeignKey(Sale, related_name="sale", on_delete=models.CASCADE)
+    sale_id = models.ForeignKey(Sale, related_name="sale", on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = ("Account Receivable")
