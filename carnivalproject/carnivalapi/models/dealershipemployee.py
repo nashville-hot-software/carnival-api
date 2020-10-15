@@ -6,8 +6,8 @@ from .dealership import Dealership
 
 class DealershipEmployee(models.Model):
 
-    employee_id = models.ForeignKey(Employee, related_name="employee", on_delete=models.CASCADE)
-    dealership_id = models.ForeignKey(Dealership, related_name="dealership", on_delete=models.CASCADE)
+    employee = models.ForeignKey(Employee, related_name="employee", on_delete=models.CASCADE)
+    dealership = models.ForeignKey(Dealership, related_name="dealership", on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = ("Dealership Employee")

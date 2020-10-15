@@ -9,8 +9,8 @@ class employee(models.Model):
     last_name = models.CharField(null=True, max_length=20)
     email_address = models.EmailField(max_length=254)
     phone = models.CharField(max_length=20, null=True, help_text='Contact phone number')
-    employee_type_id = models.ForeignKey(employee, on_delete=models.CASCADE)
-    isActive = models.BooleanField(null=True, max_length=20)
+    employee_type = models.ForeignKey(EmployeeType, on_delete=models.CASCADE)
+    isActive = models.BooleanField(null=True)
 
     class Meta:
         verbose_name = ("Employee")
