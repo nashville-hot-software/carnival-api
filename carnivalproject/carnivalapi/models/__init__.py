@@ -11,7 +11,7 @@ from .employeetype import EmployeeType
 from .repairtype import RepairType
 from .vehiclebodytype import VehicleBodyType
 from .vehiclemake import VehicleMake
-from .carrepairtypelog import CarRepairTypeLog
+from .carrepairtypelog import CarRepairType
 from .customer import Customer
 from .dealershipemployee import DealershipEmployee
 

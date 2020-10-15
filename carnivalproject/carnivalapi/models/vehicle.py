@@ -2,12 +2,11 @@ from django.db import models
 from django.urls import reverse
 from .vehicletype import VehicleType
 
-
 class Vehicle(models.Model):
     
     vin = models.CharField(max_length=50, null=False, default="AAAAAAAAAAAAAAA")
     engine_type = models.CharField(max_length=2, null=False, default="V6")
-    vehicle_type = models.ForeignKey(VehicleType, related_name="vehicle type", on_delete=models.CASCADE)
+    vehicle_type = models.ForeignKey(VehicleType, related_name="vehicletype", on_delete=models.CASCADE)
     exterior_color = models.CharField(max_length=50, null=False, default="Default Exterior Color")
     interior_color = models.CharField(max_length=50, null=False, default="Default Interior Color")
     floor_price = models.IntegerField(null=False, default=20000)
