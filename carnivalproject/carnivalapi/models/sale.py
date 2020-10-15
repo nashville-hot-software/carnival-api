@@ -2,16 +2,16 @@ from django.db import models
 from django.urls import reverse
 from .saletype import SaleType
 from .vehicle import Vehicle
-# from .employee import Employee
-# from .customer import Customer
+from .employee import Employee
+from .customer import Customer
 from .dealership import Dealership
 
 class Sale(models.Model):
     
-    sales_type = models.ForeignKey(SaleType, related_name="sale type", on_delete = models.CASCADE)
+    sales_type = models.ForeignKey(SaleType, related_name="saletype", on_delete = models.CASCADE)
     vehicle = models.ForeignKey(Vehicle, related_name="vehicle", on_delete = models.CASCADE)
-    # employee = models.ForeignKey(Employee, related_name="employee", on_delete = models.CASCADE)
-    # customer = models.ForeignKey(Customer, related_name="customer", on_delete = models.CASCADE)
+    employee = models.ForeignKey(Employee, related_name="employee", on_delete = models.CASCADE)
+    customer = models.ForeignKey(Customer, related_name="customer", on_delete = models.CASCADE)
     dealership = models.ForeignKey(Dealership, related_name="dealership", on_delete = models.CASCADE)
     price = models.DecimalField(max_digits=8, decimal_places=2, null=False, default=1000)
     deposit = models.IntegerField(null=False, default=1000)
