@@ -8,7 +8,7 @@ from .dealership import Dealership
 
 class Sale(models.Model):
     
-    sales_type = models.ForeignKey(SaleType, related_name="sale type", on_delete = models.CASCADE)
+    sales_type = models.ForeignKey(SaleType, related_name="saletype", on_delete = models.CASCADE)
     vehicle = models.ForeignKey(Vehicle, related_name="vehicle", on_delete = models.CASCADE)
     employee = models.ForeignKey(Employee, related_name="employee", on_delete = models.CASCADE)
     customer = models.ForeignKey(Customer, related_name="customer", on_delete = models.CASCADE)
