@@ -8,7 +8,7 @@ class employee(models.Model):
     first_name = models.CharField(null=True, max_length=20)
     last_name = models.CharField(null=True, max_length=20)
     email_address = models.EmailField(max_length=254)
-    phone = models.PhoneField(null=True, help_text='Contact phone number')
+    phone = models.CharField(max_length=20, null=True, help_text='Contact phone number')
     employee_type_id = models.ForeignKey(employee, on_delete=models.CASCADE)
     isActive = models.BooleanField(null=True, max_length=20)
 
