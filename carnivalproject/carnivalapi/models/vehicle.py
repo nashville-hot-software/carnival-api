@@ -2,7 +2,6 @@ from django.db import models
 from django.urls import reverse
 from .vehicletype import VehicleType
 
-
 class Vehicle(models.Model):
     
     vin = models.CharField(max_length=50, null=False, default="AAAAAAAAAAAAAAA")

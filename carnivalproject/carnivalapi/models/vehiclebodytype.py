@@ -1,10 +1,9 @@
 from django.db import models
 from django.urls import reverse
 
-
 class VehicleBodyType(models.Model):
 
-    name = models.CharField(_null=True, max_length=50)
+    name = models.CharField(null=True, max_length=50)
 
     class Meta:
         verbose_name = ("Vehicle Body Type")
