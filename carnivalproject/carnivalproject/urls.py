@@ -21,6 +21,7 @@ from carnivalapi.views import *
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'customers', Customers, 'customer')
 router.register(r'dealerships', Dealerships, 'dealership')
+router.register(r'sales', Sales, 'sales')
 
 urlpatterns = [
     path('', include(router.urls)),
