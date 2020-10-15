@@ -19,6 +19,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from carnivalapi.views import *
 
 router = routers.DefaultRouter(trailing_slash=False)
+router.register(r'customers', Customers, 'customer')
 
 urlpatterns = [
     path('', include(router.urls)),
