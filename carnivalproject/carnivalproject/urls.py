@@ -24,6 +24,7 @@ router.register(r'dealerships', Dealerships, 'dealership')
 router.register(r'sales', Sales, 'sales')
 router.register(r'accountsreceivable', AccountsReceivable, 'accountsreceivable')
 router.register(r'carrepairs', CarRepairTypes, 'carrepairs')
+router.register(r'dealershipemployees', DealershipEmployees, 'dealershipemployees')
 
 urlpatterns = [
     path('', include(router.urls)),
