@@ -23,6 +23,7 @@ router.register(r'customers', Customers, 'customer')
 router.register(r'dealerships', Dealerships, 'dealership')
 router.register(r'sales', Sales, 'sales')
 router.register(r'accountsreceivable', AccountsReceivable, 'accountsreceivable')
+router.register(r'carrepairs', CarRepairTypes, 'carrepairs')
 
 urlpatterns = [
     path('', include(router.urls)),
