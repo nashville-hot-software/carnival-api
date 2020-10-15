@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
-class repairtype(models.Model):
+class RepairType(models.Model):
 
     name = models.CharField(null=True, max_length=50)
 
