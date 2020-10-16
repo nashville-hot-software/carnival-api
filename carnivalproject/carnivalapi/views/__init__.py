@@ -12,3 +12,4 @@ from .vehiclebodytype import VehicleBodyTypes
 from .vehicletype import VehicleTypes
 from .saletype import SaleTypes
 from .vehicle import Vehicles
+from .vehiclemake import VehicleMakes

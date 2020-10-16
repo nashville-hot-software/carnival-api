@@ -33,6 +33,7 @@ router.register(r'repairtypes', RepairTypes, 'repairtype')
 router.register(r'oilchangelogs', OilChangeLogs, 'oilchangelog')
 router.register(r'saletypes', SaleTypes, 'saletypes')
 router.register(r'vehicles', Vehicles, 'vehicles')
+router.register(r'vehiclemakes', VehicleMakes, 'vehiclemakes')
 
 urlpatterns = [
     path('', include(router.urls)),
