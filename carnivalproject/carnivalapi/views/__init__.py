@@ -10,3 +10,4 @@ from .repairtype import RepairTypes
 from .oilchangelog import OilChangeLogs
 from .vehiclebodytype import VehicleBodyTypes
 from .vehicletype import VehicleTypes
+from .saletype import SaleTypes
