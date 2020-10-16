@@ -6,3 +6,7 @@ from .carrepairtype import CarRepairTypes
 from .dealershipemployee import DealershipEmployees
 from .employee import Employees
 from .employeetype import EmployeeTypes
+from .repairtype import RepairType
+from .oilchangelog import OilChangeLog
+from .vehiclebodytype import VehicleBodyType
+from .vehicletype import VehicleType
