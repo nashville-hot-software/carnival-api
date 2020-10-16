@@ -15,7 +15,7 @@ class OilChangeLogSerializer(serializers.HyperlinkedModelSerializer):
         )
         fields = ('id', 'oil_change_date', 'vehicle_id')
 
-class OilChangeLog(ViewSet):
+class OilChangeLogs(ViewSet):
 
     def create(self, request):
     
@@ -58,8 +58,8 @@ class OilChangeLog(ViewSet):
         """
         oilchangelog = OilChangeLog.objects.get(pk=pk)
 
-        new_oilchangelog.oil_change_date = request.data["oilChangeDate"]
-        new_oilchangelog.vehicle_id = request.data["vehicleId"]
+        oilchangelog.oil_change_date = request.data["oilChangeDate"]
+        oilchangelog.vehicle_id = request.data["vehicleId"]
 
         oilchangelog.save()
 
