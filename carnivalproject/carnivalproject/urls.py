@@ -27,6 +27,10 @@ router.register(r'carrepairs', CarRepairTypes, 'carrepairs')
 router.register(r'dealershipemployees', DealershipEmployees, 'dealershipemployees')
 router.register(r'employees', Employees, 'employees')
 router.register(r'employeetypes', EmployeeTypes, 'employeetypes')
+router.register(r'vehicletype', VehicleType, 'vehicletype')
+router.register(r'vehiclebodytype', VehicleBodyType, 'vehiclebodytype')
+router.register(r'repairtype', Repairtype, 'repairtype')
+router.register(r'oilchangedate', OilChangeDate, 'oilchangedate')
 
 urlpatterns = [
     path('', include(router.urls)),
