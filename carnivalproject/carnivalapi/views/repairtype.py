@@ -15,7 +15,7 @@ class RepairTypeSerializer(serializers.HyperlinkedModelSerializer):
         )
         fields = ('id', 'name')
 
-class RepairType(ViewSet):
+class RepairTypes(ViewSet):
 
     def create(self, request):
     
@@ -56,7 +56,7 @@ class RepairType(ViewSet):
         """
         repairtype = RepairType.objects.get(pk=pk)
 
-        new_repairtype.name = request.data["name"]
+        repairtype.name = request.data["name"]
 
         repairtype.save()
 

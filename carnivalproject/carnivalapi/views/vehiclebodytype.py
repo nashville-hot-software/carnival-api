@@ -15,7 +15,7 @@ class VehicleBodyTypeSerializer(serializers.HyperlinkedModelSerializer):
         )
         fields = ('id', 'name')
 
-class VehicleBodyType(ViewSet):
+class VehicleBodyTypes(ViewSet):
 
     def create(self, request):
     
@@ -56,7 +56,7 @@ class VehicleBodyType(ViewSet):
         """
         vehiclebodytype = VehicleBodyType.objects.get(pk=pk)
 
-        new_vehiclebodytype.name = request.data["name"]
+        vehiclebodytype.name = request.data["name"]
 
         vehiclebodytype.save()
 
