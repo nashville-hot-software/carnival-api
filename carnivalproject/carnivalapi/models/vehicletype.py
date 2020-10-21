@@ -1,14 +1,11 @@
 from django.db import models
 from django.urls import reverse
-from .vehiclebodytype import VehicleBodyType
-from .vehiclemake import VehicleMake
-from .vehiclemodel import VehicleModel
 
 class VehicleType(models.Model):
     
-    body_type = models.ForeignKey(VehicleBodyType, related_name="vehiclebodytype", on_delete = models.CASCADE)
-    make = models.ForeignKey(VehicleMake, related_name="vehiclemake", on_delete = models.CASCADE)
-    model = models.ForeignKey(VehicleModel, related_name="vehiclemodel", on_delete = models.CASCADE)
+    body_type = models.CharField(max_length=20, null=True)
+    make = models.CharField(max_length=20, null=True)
+    model = models.CharField(max_length=20, null=True)
 
     class Meta:
         verbose_name = ("Vehicle Type")
