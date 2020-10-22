@@ -19,6 +19,7 @@ class Sale(models.Model):
     pickup_date = models.DateField(null=False, default='2000-01-01')
     invoice_number = models.CharField(null=False, max_length=50, default='1111111111')
     payment_method = models.CharField(null=False, max_length=50, default='visa')
+    returned = models.BooleanField(null=True)
 
 
     class Meta:
