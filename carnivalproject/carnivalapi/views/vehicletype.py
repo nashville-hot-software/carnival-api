@@ -13,7 +13,7 @@ class VehicleTypeSerializer(serializers.HyperlinkedModelSerializer):
             view_name='VehicleType',
             lookup_field='id'
         )
-        fields = ('id', 'body_type_id', 'make_id', 'model_id')
+        fields = ('id', 'body_type', 'make', 'model')
 
 class VehicleTypes(ViewSet):
 
@@ -21,15 +21,15 @@ class VehicleTypes(ViewSet):
     
         new_vehicletype = VehicleType()
 
-        new_vehicletype.body_type_id = request.data["bodyTypeId"]
-        new_vehicletype.make_id = request.data["makeId"]
-        new_vehicletype.model_id = request.data["modelId"]
+        new_vehicletype.body_type = request.data["bodyType"]
+        new_vehicletype.make = request.data["make"]
+        new_vehicletype.model = request.data["model"]
 
         # FOR POSTMAN TESTING
         # {
-        #     "body_type_id": "BodyTypeId"
-        #     "make_id": "MakeId"
-        #     "model_id": "ModelId"
+        #     "body_type": "BodyType"
+        #     "make": "Make"
+        #     "model": "Model"
         # }
 
 
@@ -60,9 +60,9 @@ class VehicleTypes(ViewSet):
         """
         vehicletype = VehicleType.objects.get(pk=pk)
 
-        vehicletype.body_type_id = request.data["bodyTypeId"]
-        vehicletype.make_id = request.data["makeId"]
-        vehicletype.model_id = request.data["modelId"]
+        vehicletype.body_type = request.data["bodyType"]
+        vehicletype.make = request.data["make"]
+        vehicletype.model = request.data["model"]
 
         vehicletype.save()
 
