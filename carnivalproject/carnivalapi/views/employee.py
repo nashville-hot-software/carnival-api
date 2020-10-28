@@ -13,7 +13,7 @@ class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
             view_name='Employees',
             lookup_field='id'
         )
-        fields = ('id', 'first_name', 'last_name', 'email_address', 'phone', 'isActive', 'employee_type_id')
+        fields = ('id', 'first_name', 'last_name', 'email_address', 'phone', 'dealership_id', 'employee_type_id')
 
 class Employees(ViewSet):
 
@@ -25,7 +25,7 @@ class Employees(ViewSet):
         new_employee.last_name = request.data["lastName"]
         new_employee.email_address = request.data["emailAddress"]
         new_employee.phone = request.data["phone"]
-        new_employee.isActive = request.data["isActive"]
+        new_employee.dealership_id = request.data["dealershipId"]
         new_employee.employee_type_id = request.data["employeeTypeId"]
 
         # FOR POSTMAN TESTING
