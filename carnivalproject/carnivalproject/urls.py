@@ -32,7 +32,7 @@ router.register(r'vehicletypes', VehicleTypes, 'vehicletype')
 router.register(r'repairtypes', RepairTypes, 'repairtype')
 router.register(r'oilchangelogs', OilChangeLogs, 'oilchangelog')
 router.register(r'saletypes', SaleTypes, 'saletypes')
-router.register(r'vehicles', Vehicles, 'vehicles')
+router.register(r'vehicles', Vehicles, 'vehicle')
 # router.register(r'vehiclemakes', VehicleMakes, 'vehiclemakes')
 # router.register(r'vehiclemodels', VehicleModels, 'vehiclemodels')
 
