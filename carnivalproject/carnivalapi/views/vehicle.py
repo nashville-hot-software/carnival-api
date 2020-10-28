@@ -13,7 +13,9 @@ class VehicleSerializer(serializers.HyperlinkedModelSerializer):
             view_name='Vehicles',
             lookup_field='id'
         )
-        fields = ('id', 'vin', 'engine_type', 'exterior_color', 'interior_color', 'floor_price', 'msr_price', 'miles_count', 'year_of_car', 'is_sold', 'vehicle_type_id')
+        fields = ('id', 'vin', 'engine_type', 'vehicle_type', 'exterior_color', 'interior_color', 'floor_price', 'msr_price', 'miles_count', 'year_of_car', 'is_sold', 'vehicle_type_id')
+
+        depth = 1
 
 class Vehicles(ViewSet):
 
