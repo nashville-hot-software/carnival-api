@@ -13,7 +13,8 @@ class AccountReceivableSerializer(serializers.HyperlinkedModelSerializer):
             view_name='Account Receivable',
             lookup_field='id'
         )
-        fields = ('id', 'credit_amount', 'debit_amount', 'date_received', 'sale_id')
+        fields = ('id', 'credit_amount', 'debit_amount', 'date_received', 'sale')
+        depth = 1
 
 class AccountsReceivable(ViewSet):
 

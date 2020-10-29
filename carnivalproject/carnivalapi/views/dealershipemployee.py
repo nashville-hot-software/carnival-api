@@ -10,10 +10,11 @@ class DealershipEmployeeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = DealershipEmployee
         url = serializers.HyperlinkedIdentityField(
-            view_name='DealershipEmployees',
+            view_name='dealershipemployee',
             lookup_field='id'
         )
-        fields = ('id', 'dealership_id', 'employee_id')
+        fields = ('id', 'dealership_id', 'dealership', 'employee_id', 'employee')
+        depth = 1
 
 class DealershipEmployees(ViewSet):
 

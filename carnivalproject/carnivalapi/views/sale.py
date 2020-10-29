@@ -3,17 +3,19 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from ..models import Sale
+from ..models import Sale, SaleType
+# from django.db import connection
 
 class SaleSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Sale
         url = serializers.HyperlinkedIdentityField(
-            view_name='Sale',
+            view_name='sale',
             lookup_field='id'
         )
-        fields = ('id', 'price', 'deposit', 'purchase_date', 'pickup_date', 'invoice_number', 'payment_method', 'returned', 'customer_id', 'dealership_id','employee_id','sales_type_id','vehicle_id')
+        fields = ('id' ,'sales_type', 'vehicle','employee','customer','dealership', 'price', 'deposit', 'purchase_date', 'pickup_date', 'invoice_number', 'payment_method', 'returned')
+        depth = 1
 
 class Sales(ViewSet):
 
@@ -61,7 +63,10 @@ class Sales(ViewSet):
     def retrieve(self, request, pk=None):
 
         try:
-            sale = sale.objects.get(pk=pk)
+            sale = Sale.objects.get(pk=pk)
+
+            # cursor = connection.cursor()
+            # cursor.execute('''SELECT count(*) FROM people_person''')
 
             serializer = SaleSerializer(
                 sale, context={'request': request})
