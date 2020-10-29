@@ -83,6 +83,11 @@ class VehicleBodyTypes(ViewSet):
         
         vehiclebodytype = VehicleBodyType.objects.all()
 
+        limit = self.request.query_params.get('limit')
+
+        if limit is not None:
+            vehiclebodytype = VehicleBodyType.objects.all()[:int(limit)]
+
         serializer = VehicleBodyTypeSerializer(
             vehiclebodytype, many=True, context={'request': request})
 
