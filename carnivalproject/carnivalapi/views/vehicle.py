@@ -92,14 +92,14 @@ class Vehicles(ViewSet):
 
     def list(self, request):
         
-        vehicles = Vehicle.objects.all()
+        recent_vehicles = Vehicle.objects.all().order_by('-id')
 
         limit = self.request.query_params.get('limit')
 
         if limit is not None:
-            vehicles = Vehicle.objects.all()[:int(limit)]
+            recent_vehicles = Vehicle.objects.all().order_by('-id')[:int(limit)]
 
         serializer = VehicleSerializer(
-            vehicles, many=True, context={'request': request})
+            recent_vehicles, many=True, context={'request': request})
 
         return Response(serializer.data)
