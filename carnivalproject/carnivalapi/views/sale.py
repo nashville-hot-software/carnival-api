@@ -116,14 +116,14 @@ class Sales(ViewSet):
 
     def list(self, request):
         
-        sales = Sale.objects.all()
+        recent_sales = Sale.objects.all().order_by('-id')
 
         limit = self.request.query_params.get('limit')
 
         if limit is not None:
-            sales = Sale.objects.all()[:int(limit)]
+            recent_sales = Sale.objects.all().order_by('-id')[:int(limit)]
 
         serializer = SaleSerializer(
-            sales, many=True, context={'request': request})
+            recent_sales, many=True, context={'request': request})
 
         return Response(serializer.data)
