@@ -87,6 +87,11 @@ class OilChangeLogs(ViewSet):
         
         oilchangelog = OilChangeLog.objects.all()
 
+        limit = self.request.query_params.get('limit')
+
+        if limit is not None:
+            oilchangelog = OilChangeLog.objects.all()[:int(limit)]
+
         serializer = OilChangeLogSerializer(
             oilchangelog, many=True, context={'request': request})
 

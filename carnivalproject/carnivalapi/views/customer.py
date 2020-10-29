@@ -106,6 +106,11 @@ class Customers(ViewSet):
         
         customers = Customer.objects.all()
 
+        limit = self.request.query_params.get('limit')
+
+        if limit is not None:
+            customers = Customer.objects.all()[:int(limit)]
+
         serializer = CustomerSerializer(
             customers, many=True, context={'request': request})
 
