@@ -61,7 +61,7 @@ class Sales(ViewSet):
     def retrieve(self, request, pk=None):
 
         try:
-            sale = sale.objects.get(pk=pk)
+            sale = Sale.objects.get(pk=pk)
 
             serializer = SaleSerializer(
                 sale, context={'request': request})
