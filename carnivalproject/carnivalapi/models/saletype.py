@@ -13,4 +13,4 @@ class SaleType(models.Model):
         return f"Sale Type ID: {self.pk}"
     
     def get_absolute_url(self):
-        return reverse("sale_detail", kwargs={"pk": self.pk})
+        return reverse("sale_type_detail", kwargs={"pk": self.pk})
