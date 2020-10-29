@@ -10,7 +10,7 @@ class SaleTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SaleType
         url = serializers.HyperlinkedIdentityField(
-            view_name='SaleTypes',
+            view_name='saletype',
             lookup_field='id'
         )
         fields = ('id', 'name')

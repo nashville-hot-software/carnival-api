@@ -13,7 +13,8 @@ class OilChangeLogSerializer(serializers.HyperlinkedModelSerializer):
             view_name='OilChangeLog',
             lookup_field='id'
         )
-        fields = ('id', 'oil_change_date', 'vehicle_id')
+        fields = ('id', 'oil_change_date', 'vehicle')
+        depth = 1
 
 class OilChangeLogs(ViewSet):
 
