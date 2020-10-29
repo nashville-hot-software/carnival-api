@@ -94,6 +94,11 @@ class Vehicles(ViewSet):
         
         vehicles = Vehicle.objects.all()
 
+        limit = self.request.query_params.get('limit')
+
+        if limit is not None:
+            vehicles = Vehicle.objects.all()[:int(limit)]
+
         serializer = VehicleSerializer(
             vehicles, many=True, context={'request': request})
 

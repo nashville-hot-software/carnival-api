@@ -83,6 +83,11 @@ class SaleTypes(ViewSet):
         
         sale_types = SaleType.objects.all()
 
+        limit = self.request.query_params.get('limit')
+
+        if limit is not None:
+            sale_types = SaleType.objects.all()[:int(limit)]
+
         serializer = SaleTypeSerializer(
             sale_types, many=True, context={'request': request})
 

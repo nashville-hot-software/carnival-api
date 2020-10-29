@@ -83,6 +83,11 @@ class VehicleMakes(ViewSet):
         
         vehicle_makes = VehicleMake.objects.all()
 
+        limit = self.request.query_params.get('limit')
+
+        if limit is not None:
+            vehicle_makes = VehicleMake.objects.all()[:int(limit)]
+
         serializer = VehicleMakeSerializer(
             vehicle_makes, many=True, context={'request': request})
 

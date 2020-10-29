@@ -93,6 +93,11 @@ class CarRepairTypes(ViewSet):
         
         car_repair_types = CarRepairType.objects.all()
 
+        limit = self.request.query_params.get('limit')
+
+        if limit is not None:
+            car_repair_types = CarRepairType.objects.all()[:int(limit)]
+
         serializer = CarRepairTypeSerializer(
             car_repair_types, many=True, context={'request': request})
 

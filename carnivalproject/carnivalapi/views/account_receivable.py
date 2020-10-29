@@ -93,6 +93,11 @@ class AccountsReceivable(ViewSet):
         
         accounts_receivable = AccountReceivable.objects.all()
 
+        limit = self.request.query_params.get('limit')
+
+        if limit is not None:
+            accounts_receivable = AccountReceivable.objects.all()[:int(limit)]
+
         serializer = AccountReceivableSerializer(
             accounts_receivable, many=True, context={'request': request})
 

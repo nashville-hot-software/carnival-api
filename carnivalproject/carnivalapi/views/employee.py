@@ -99,6 +99,11 @@ class Employees(ViewSet):
         
         employees = Employee.objects.all()
 
+        limit = self.request.query_params.get('limit')
+
+        if limit is not None:
+            employees = Employee.objects.all()[:int(limit)]
+
         serializer = EmployeeSerializer(
             employees, many=True, context={'request': request})
 

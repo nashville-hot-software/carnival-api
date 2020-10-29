@@ -98,6 +98,11 @@ class Dealerships(ViewSet):
         
         dealerships = Dealership.objects.all()
 
+        limit = self.request.query_params.get('limit')
+
+        if limit is not None:
+            dealerships = Dealership.objects.all()[:int(limit)]
+
         serializer = DealershipSerializer(
             dealerships, many=True, context={'request': request})
 

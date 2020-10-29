@@ -83,6 +83,11 @@ class EmployeeTypes(ViewSet):
         
         employee_types = EmployeeType.objects.all()
 
+        limit = self.request.query_params.get('limit')
+
+        if limit is not None:
+            employee_types = EmployeeType.objects.all()[:int(limit)]
+
         serializer = EmployeeTypeSerializer(
             employee_types, many=True, context={'request': request})
 
