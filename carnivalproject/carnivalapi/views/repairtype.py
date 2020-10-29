@@ -83,6 +83,11 @@ class RepairTypes(ViewSet):
         
         repairtype = RepairType.objects.all()
 
+        limit = self.request.query_params.get('limit')
+
+        if limit is not None:
+            repairtype = RepairType.objects.all()[:int(limit)]
+
         serializer = RepairTypeSerializer(
             repairtype, many=True, context={'request': request})
 

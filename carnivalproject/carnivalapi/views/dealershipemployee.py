@@ -87,6 +87,11 @@ class DealershipEmployees(ViewSet):
         
         dealership_employees = DealershipEmployee.objects.all()
 
+        limit = self.request.query_params.get('limit')
+
+        if limit is not None:
+            dealership_employees = DealershipEmployee.objects.all()[:int(limit)]
+
         serializer = DealershipEmployeeSerializer(
             dealership_employees, many=True, context={'request': request})
 
