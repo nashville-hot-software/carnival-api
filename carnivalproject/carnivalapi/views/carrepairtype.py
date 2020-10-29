@@ -13,7 +13,8 @@ class CarRepairTypeSerializer(serializers.HyperlinkedModelSerializer):
             view_name='CarRepairTypes',
             lookup_field='id'
         )
-        fields = ('id', 'name', 'date_occured', 'repair_type_id', 'vehicle_id')
+        fields = ('id', 'name', 'date_occured', 'repair_type', 'vehicle')
+        depth = 2
 
 class CarRepairTypes(ViewSet):
 

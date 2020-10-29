@@ -13,7 +13,8 @@ class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
             view_name='Employees',
             lookup_field='id'
         )
-        fields = ('id', 'first_name', 'last_name', 'email_address', 'phone', 'dealership_id', 'employee_type_id')
+        fields = ('id', 'first_name', 'last_name', 'email_address', 'phone', 'dealership', 'employee_type')
+        depth = 1
 
 class Employees(ViewSet):
 
