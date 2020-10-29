@@ -104,14 +104,14 @@ class Customers(ViewSet):
 
     def list(self, request):
         
-        customers = Customer.objects.all()
+        recent_customers = Customer.objects.all().order_by('-id')
 
         limit = self.request.query_params.get('limit')
 
         if limit is not None:
-            customers = Customer.objects.all()[:int(limit)]
+            recent_customers = Customer.objects.all().order_by('-id')[:int(limit)]
 
         serializer = CustomerSerializer(
-            customers, many=True, context={'request': request})
+            recent_customers, many=True, context={'request': request})
 
         return Response(serializer.data)
