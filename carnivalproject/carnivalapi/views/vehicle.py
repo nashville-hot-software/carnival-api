@@ -92,14 +92,15 @@ class Vehicles(ViewSet):
 
     def list(self, request):
         
-        recent_vehicles = Vehicle.objects.all().order_by('-id')
+        popular_vehicles = Vehicle.objects.raw('select * from popular_vehicles;')
 
         limit = self.request.query_params.get('limit')
 
         if limit is not None:
-            recent_vehicles = Vehicle.objects.all().order_by('-id')[:int(limit)]
+            popular_vehicles = Vehicle.objects.raw('select * from popular_vehicles;')[:int(limit)]
 
         serializer = VehicleSerializer(
-            recent_vehicles, many=True, context={'request': request})
+            popular_vehicles, many=True, context={'request': request})
 
         return Response(serializer.data)
+        
