@@ -103,3 +103,4 @@ class Vehicles(ViewSet):
             popular_vehicles, many=True, context={'request': request})
 
         return Response(serializer.data)
+        
