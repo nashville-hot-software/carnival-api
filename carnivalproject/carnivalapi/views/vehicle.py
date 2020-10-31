@@ -3,7 +3,8 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from ..models import Vehicle
+from ..models import Vehicle, VehicleType
+from .vehicletype import VehicleTypeSerializer
 
 class VehicleSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -16,6 +17,16 @@ class VehicleSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'vin', 'engine_type', 'vehicle_type', 'exterior_color', 'interior_color', 'floor_price', 'msr_price', 'miles_count', 'year_of_car', 'is_sold', 'vehicle_type_id')
 
         depth = 1
+
+class VehicleTypeSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = VehicleType
+        url = serializers.HyperlinkedIdentityField(
+            view_name='VehicleType',
+            lookup_field='id'
+        )
+        fields = ('id', 'body_type', 'make', 'model')
 
 class Vehicles(ViewSet):
 
@@ -91,16 +102,29 @@ class Vehicles(ViewSet):
             return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def list(self, request):
-        
+
+        vehicles = Vehicle.objects.all()
         popular_vehicles = Vehicle.objects.raw('select * from popular_vehicles;')
 
         limit = self.request.query_params.get('limit')
+        popular_models = self.request.query_params.get('popular_models')
+        
 
-        if limit is not None:
-            popular_vehicles = Vehicle.objects.raw('select * from popular_vehicles;')[:int(limit)]
+        if popular_models is not None:
+            popular_vehicles = Vehicle.objects.raw('select * from popular_vehicles;')
+            
+            serializer = VehicleTypeSerializer(
+            popular_vehicles, many=True, context={'request': request})
+
+            return Response(serializer.data)
+
+        elif limit is not None:
+            vehicles = Vehicle.objects.all().order_by('-id')[:int(limit)]
+        
 
         serializer = VehicleSerializer(
-            popular_vehicles, many=True, context={'request': request})
+            vehicles, many=True, context={'request': request})
+
 
         return Response(serializer.data)
         
