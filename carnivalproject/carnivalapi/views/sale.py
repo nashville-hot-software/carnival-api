@@ -15,7 +15,7 @@ class SaleSerializer(serializers.HyperlinkedModelSerializer):
             lookup_field='id'
         )
         fields = ('id' ,'sales_type', 'vehicle','employee','customer','dealership', 'price', 'deposit', 'purchase_date', 'pickup_date', 'invoice_number', 'payment_method', 'returned')
-        depth = 1
+        depth = 2
 
 class Sales(ViewSet):
 
