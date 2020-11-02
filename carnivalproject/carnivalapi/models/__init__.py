@@ -1,5 +1,6 @@
 from .sale import Sale
 from .saletype import SaleType
+from .salemetric import SaleMetric
 from .vehicle import Vehicle
 from .popularvehicle import PopularVehicle
 from .dealership import Dealership

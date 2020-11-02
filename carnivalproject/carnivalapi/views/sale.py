@@ -3,7 +3,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from ..models import Sale, SaleType
+from ..models import Sale, SaleType, SaleMetric
 # from django.db import connection
 
 class SaleSerializer(serializers.HyperlinkedModelSerializer):
@@ -16,6 +16,16 @@ class SaleSerializer(serializers.HyperlinkedModelSerializer):
         )
         fields = ('id' ,'sales_type', 'vehicle','employee','customer','dealership', 'price', 'deposit', 'purchase_date', 'pickup_date', 'invoice_number', 'payment_method', 'returned')
         depth = 2
+
+class SaleMetricSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = SaleMetric
+        url = serializers.HyperlinkedIdentityField(
+            view_name='sale',
+            lookup_field='id'
+        )
+        fields = ('id', 'sale_count')
 
 class Sales(ViewSet):
 
@@ -119,12 +129,18 @@ class Sales(ViewSet):
         recent_sales = Sale.objects.raw('select * from recent_sales;')
 
         limit = self.request.query_params.get('limit')
-        sale_count = self.request.query_params.get('count')
+        sale_count = self.request.query_params.get('sale_count')
 
         if limit is not None:
             recent_sales = Sale.objects.raw('select * from recent_sales;')[:int(limit)]
+        
         elif sale_count is not None:
-            recent_sales = Sale.objects.raw('select * from four_month_recent_sales;')
+            four_month_recent_sales = Sale.objects.raw('select * from four_month_recent_sales;')
+
+            serializer = SaleMetricSerializer(
+                four_month_recent_sales, many=True, context={'request': request})
+                
+            return Response(serializer.data)
 
 
         serializer = SaleSerializer(
