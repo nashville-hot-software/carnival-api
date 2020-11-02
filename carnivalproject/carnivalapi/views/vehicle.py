@@ -1,9 +1,10 @@
 from django.http import HttpResponseServerError
+from django.core import serializers as Serializers
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from ..models import Vehicle, VehicleType
+from ..models import Vehicle, VehicleType, PopularVehicle
 from .vehicletype import VehicleTypeSerializer
 
 class VehicleSerializer(serializers.HyperlinkedModelSerializer):
@@ -17,16 +18,16 @@ class VehicleSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'vin', 'engine_type', 'vehicle_type', 'exterior_color', 'interior_color', 'floor_price', 'msr_price', 'miles_count', 'year_of_car', 'is_sold', 'vehicle_type_id')
 
         depth = 1
-
-class VehicleTypeSerializer(serializers.HyperlinkedModelSerializer):
+        
+class PopularVehicleSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        model = VehicleType
+        model = PopularVehicle
         url = serializers.HyperlinkedIdentityField(
-            view_name='VehicleType',
+            view_name='PopularVehicle',
             lookup_field='id'
         )
-        fields = ('id', 'body_type', 'make', 'model')
+        fields = ('id', 'vehicles_sold', 'make', 'model')
 
 class Vehicles(ViewSet):
 
@@ -113,7 +114,7 @@ class Vehicles(ViewSet):
         if popular_models is not None:
             popular_vehicles = Vehicle.objects.raw('select * from popular_vehicles;')
             
-            serializer = VehicleTypeSerializer(
+            serializer = PopularVehicleSerializer(
             popular_vehicles, many=True, context={'request': request})
 
             return Response(serializer.data)
