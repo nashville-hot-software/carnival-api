@@ -119,9 +119,12 @@ class Sales(ViewSet):
         recent_sales = Sale.objects.raw('select * from recent_sales;')
 
         limit = self.request.query_params.get('limit')
+        sale_count = self.request.query_params.get('count')
 
         if limit is not None:
             recent_sales = Sale.objects.raw('select * from recent_sales;')[:int(limit)]
+        elif sale_count is not None:
+            recent_sales = Sale.objects.raw('select * from four_month_recent_sales;')
 
 
         serializer = SaleSerializer(
