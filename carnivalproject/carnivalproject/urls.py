@@ -28,13 +28,10 @@ router.register(r'dealershipemployees', DealershipEmployees, 'dealershipemployee
 router.register(r'employees', Employees, 'employee')
 router.register(r'employeetypes', EmployeeTypes, 'employeetype')
 router.register(r'vehicletypes', VehicleTypes, 'vehicletype')
-# router.register(r'vehiclebodytypes', VehicleBodyTypes, 'vehiclebodytype')
 router.register(r'repairtypes', RepairTypes, 'repairtype')
 router.register(r'oilchangelogs', OilChangeLogs, 'oilchangelog')
 router.register(r'saletypes', SaleTypes, 'saletype')
 router.register(r'vehicles', Vehicles, 'vehicle')
-# router.register(r'vehiclemakes', VehicleMakes, 'vehiclemakes')
-# router.register(r'vehiclemodels', VehicleModels, 'vehiclemodels')
 
 urlpatterns = [
     path('', include(router.urls)),
