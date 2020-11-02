@@ -4,6 +4,7 @@ from django.urls import reverse
 class SaleMetric(models.Model):
     
     sale_count = models.IntegerField(null=True)
+    price = models.DecimalField(max_digits=8, decimal_places=2, null=True)
 
     class Meta:
         verbose_name = ("Sale Metric")

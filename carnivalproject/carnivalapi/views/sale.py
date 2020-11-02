@@ -25,7 +25,7 @@ class SaleMetricSerializer(serializers.HyperlinkedModelSerializer):
             view_name='sale',
             lookup_field='id'
         )
-        fields = ('id', 'sale_count')
+        fields = ('id', 'sale_count', 'price')
 
 class Sales(ViewSet):
 
@@ -130,10 +130,19 @@ class Sales(ViewSet):
 
         limit = self.request.query_params.get('limit')
         sale_count = self.request.query_params.get('sale_count')
+        revenue = self.request.query_params.get('revenue')
 
         if limit is not None:
             recent_sales = Sale.objects.raw('select * from recent_sales;')[:int(limit)]
         
+        elif sale_count is not None and revenue is not None:
+            four_month_recent_sales_revs = Sale.objects.raw('select * from four_month_recent_sales_revenue;')
+
+            serializer = SaleMetricSerializer(
+                four_month_recent_sales_revs, many=True, context={'request': request})
+
+            return Response(serializer.data)
+
         elif sale_count is not None:
             four_month_recent_sales = Sale.objects.raw('select * from four_month_recent_sales;')
 
