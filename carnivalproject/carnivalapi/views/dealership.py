@@ -1,4 +1,5 @@
 from django.http import HttpResponseServerError
+from django.db import connection
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
@@ -95,13 +96,28 @@ class Dealerships(ViewSet):
             return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def list(self, request):
-        
+
         dealerships = Dealership.objects.all()
 
         limit = self.request.query_params.get('limit')
+        searchVal = self.request.query_params.get('searchTerm')
 
         if limit is not None:
             dealerships = Dealership.objects.all()[:int(limit)]
+        
+        elif searchVal is not None:
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM carnivalapi_dealership WHERE business_name ILIKE %s", [searchVal+'%'])
+
+            def dictfetchall(cursor):
+                "Return all rows from a cursor as a dict"
+                columns = [col[0] for col in cursor.description]
+                return [
+                    dict(zip(columns, row))
+                    for row in cursor.fetchall()
+                ]
+
+            return Response(dictfetchall(cursor))
 
         serializer = DealershipSerializer(
             dealerships, many=True, context={'request': request})
