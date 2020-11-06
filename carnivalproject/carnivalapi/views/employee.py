@@ -72,7 +72,6 @@ class Employees(ViewSet):
         employee.last_name = request.data["lastName"]
         employee.email_address = request.data["emailAddress"]
         employee.phone = request.data["phone"]
-        employee.isActive = request.data["isActive"]
         employee.employee_type_id = request.data["employeeTypeId"]
 
         employee.save()
