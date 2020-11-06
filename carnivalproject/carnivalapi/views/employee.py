@@ -1,4 +1,5 @@
 from django.http import HttpResponseServerError
+from django.db import connection
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
@@ -100,9 +101,24 @@ class Employees(ViewSet):
         employees = Employee.objects.all()
 
         limit = self.request.query_params.get('limit')
+        searchVal = self.request.query_params.get('searchTerm')
 
         if limit is not None:
             employees = Employee.objects.all()[:int(limit)]
+
+        elif searchVal is not None:
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM carnivalapi_employee WHERE first_name ILIKE %s", [searchVal+'%'])
+
+            def dictfetchall(cursor):
+                "Return all rows from a cursor as a dict"
+                columns = [col[0] for col in cursor.description]
+                return [
+                    dict(zip(columns, row))
+                    for row in cursor.fetchall()
+                ]
+
+            return Response(dictfetchall(cursor))
 
         serializer = EmployeeSerializer(
             employees, many=True, context={'request': request})
