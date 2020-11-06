@@ -109,6 +109,7 @@ class Vehicles(ViewSet):
 
         limit = self.request.query_params.get('limit')
         popular_models = self.request.query_params.get('popular_models')
+        searchVal = self.request.query_params.get('searchTerm')
         
 
         if popular_models is not None:
