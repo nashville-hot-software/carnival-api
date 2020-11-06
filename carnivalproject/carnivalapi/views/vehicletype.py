@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from ..models import VehicleType
+from django.db import connection
 
 class VehicleTypeSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -90,9 +91,24 @@ class VehicleTypes(ViewSet):
         vehicletype = VehicleType.objects.all()
 
         limit = self.request.query_params.get('limit')
+        searchVal = self.request.query_params.get('searchTerm')
 
         if limit is not None:
             vehicletype = VehicleType.objects.all()[:int(limit)]
+
+        elif searchVal is not None:
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM carnivalapi_vehicletype WHERE model ILIKE %s", [searchVal+'%'])
+
+            def dictfetchall(cursor):
+                "Return all rows from a cursor as a dict"
+                columns = [col[0] for col in cursor.description]
+                return [
+                    dict(zip(columns, row))
+                    for row in cursor.fetchall()
+                ]
+
+            return Response(dictfetchall(cursor))
 
         serializer = VehicleTypeSerializer(
             vehicletype, many=True, context={'request': request})
