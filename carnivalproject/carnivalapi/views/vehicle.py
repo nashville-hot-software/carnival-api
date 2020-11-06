@@ -35,12 +35,21 @@ class Vehicles(ViewSet):
     
         new_vehicle = Vehicle()
 
-        new_vehicle.name = request.data["name"]
+        new_vehicle.vin = request.data["vin"]
+        new_vehicle.engine_type = request.data["engine_type"]
+        new_vehicle.exterior_color = request.data["exterior_color"]
+        new_vehicle.interior_color = request.data["interior_color"]
+        new_vehicle.floor_price = request.data["floor_price"]
+        new_vehicle.msr_price = request.data["msr_price"]
+        new_vehicle.miles_count = request.data["miles_count"]
+        new_vehicle.year_of_car = request.data["year_of_car"]
+        new_vehicle.is_sold = request.data["is_sold"]
+        new_vehicle.vehicle_type_id = request.data["vehicle_type_id"]
         
         # FOR POSTMAN TESTING
         # {
         #     "vin": "1234VV7JCW910",
-        #     "enginge_type": "V6",
+        #     "engine_type": "V6",
         #     "exterior_color": "Blue",
         #     "interior_color": "Black",
         #     "floor_price": 25000,
