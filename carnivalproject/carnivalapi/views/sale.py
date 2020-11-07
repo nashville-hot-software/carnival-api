@@ -1,10 +1,12 @@
 from django.http import HttpResponseServerError
+from django.db import connection
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from ..models import Sale, SaleType, SaleMetric
 # from django.db import connection
+
 
 class SaleSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -14,8 +16,10 @@ class SaleSerializer(serializers.HyperlinkedModelSerializer):
             view_name='sale',
             lookup_field='id'
         )
-        fields = ('id' ,'sales_type', 'vehicle','employee','customer','dealership', 'price', 'deposit', 'purchase_date', 'pickup_date', 'invoice_number', 'payment_method', 'returned')
+        fields = ('id', 'sales_type', 'vehicle', 'employee', 'customer', 'dealership', 'price',
+                  'deposit', 'purchase_date', 'pickup_date', 'invoice_number', 'payment_method', 'returned')
         depth = 2
+
 
 class SaleMetricSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -27,10 +31,11 @@ class SaleMetricSerializer(serializers.HyperlinkedModelSerializer):
         )
         fields = ('id', 'sale_count', 'price')
 
+
 class Sales(ViewSet):
 
     def create(self, request):
-    
+
         new_sale = Sale()
         new_sale.price = request.data["price"]
         new_sale.deposit = request.data["deposit"]
@@ -44,7 +49,6 @@ class Sales(ViewSet):
         new_sale.employee_id = request.data["employee_id"]
         new_sale.sales_type_id = request.data["sales_type_id"]
         new_sale.vehicle_id = request.data["vehicle_id"]
-       
 
         # FOR POSTMAN TESTING
         # {
@@ -61,7 +65,6 @@ class Sales(ViewSet):
         #     "sales_type_id": "some company"
         #     "vehicle_id": "some company"
         # }
-
 
         new_sale.save()
 
@@ -125,32 +128,50 @@ class Sales(ViewSet):
             return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def list(self, request):
-        
+
         recent_sales = Sale.objects.raw('select * from recent_sales;')
 
         limit = self.request.query_params.get('limit')
         sale_count = self.request.query_params.get('sale_count')
         revenue = self.request.query_params.get('revenue')
+        searchVal = self.request.query_params.get('searchTerm')
 
         if limit is not None:
-            recent_sales = Sale.objects.raw('select * from recent_sales;')[:int(limit)]
-        
-        elif sale_count is not None and revenue is not None:
-            four_month_recent_sales_revs = Sale.objects.raw('select * from four_month_recent_sales_revenue;')
+            recent_sales = Sale.objects.raw(
+                'select * from recent_sales;')[:int(limit)]
 
+        elif sale_count is not None and revenue is not None:
+            four_month_recent_sales_revs = Sale.objects.raw(
+                'select * from four_month_recent_sales_revenue;')
+
+        elif searchVal is not None:
+            cursor = connection.cursor()
+            cursor.execute("""SELECT * 
+                              FROM carnivalapi_sale s
+                              INNER JOIN carnivalapi_customer c  
+                              ON s.customer_id = c.id 
+                              WHERE first_name ILIKE %s""", [searchVal+'%'])
+
+            def dictfetchall(cursor):
+                "Return all rows from a cursor as a dict"
+                columns = [col[0] for col in cursor.description]
+                return [
+                    dict(zip(columns, row))
+                    for row in cursor.fetchall()
+                ]
             serializer = SaleMetricSerializer(
                 four_month_recent_sales_revs, many=True, context={'request': request})
 
             return Response(serializer.data)
 
         elif sale_count is not None:
-            four_month_recent_sales = Sale.objects.raw('select * from four_month_recent_sales;')
+            four_month_recent_sales = Sale.objects.raw(
+                'select * from four_month_recent_sales;')
 
             serializer = SaleMetricSerializer(
                 four_month_recent_sales, many=True, context={'request': request})
-                
-            return Response(serializer.data)
 
+            return Response(serializer.data)
 
         serializer = SaleSerializer(
             recent_sales, many=True, context={'request': request})
