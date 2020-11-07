@@ -23,21 +23,21 @@ class Employees(ViewSet):
     
         new_employee = Employee()
 
-        new_employee.first_name = request.data["firstName"]
-        new_employee.last_name = request.data["lastName"]
-        new_employee.email_address = request.data["emailAddress"]
+        new_employee.first_name = request.data["first_name"]
+        new_employee.last_name = request.data["last_name"]
+        new_employee.email_address = request.data["email_address"]
         new_employee.phone = request.data["phone"]
-        new_employee.dealership_id = request.data["dealershipId"]
-        new_employee.employee_type_id = request.data["employeeTypeId"]
+        new_employee.dealership_id = request.data["dealership_id"]
+        new_employee.employee_type_id = request.data["employee_type_id"]
 
         # FOR POSTMAN TESTING
         # {
-        #     "firstName": "Test",
-        #     "lastName": "Employee",
-        #     "emailAddress": "testemployee@gmail.com",
+        #     "first_name": "Test",
+        #     "last_name": "Employee",
+        #     "email_address": "testemployee@gmail.com",
         #     "phone": "615-555-4321",
-        #     "isActive": true,
-        #     "employeeTypeId": 1,
+        #     "dealership_id": 1,
+        #     "employee_type_id": 1,
         # }
 
 
