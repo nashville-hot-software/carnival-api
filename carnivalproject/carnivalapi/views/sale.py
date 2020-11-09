@@ -159,10 +159,8 @@ class Sales(ViewSet):
                     dict(zip(columns, row))
                     for row in cursor.fetchall()
                 ]
-            serializer = SaleMetricSerializer(
-                four_month_recent_sales_revs, many=True, context={'request': request})
-
-            return Response(serializer.data)
+           
+            return Response(dictfetchall(cursor))
 
         elif sale_count is not None:
             four_month_recent_sales = Sale.objects.raw(
