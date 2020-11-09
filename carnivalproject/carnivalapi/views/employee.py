@@ -107,7 +107,13 @@ class Employees(ViewSet):
 
         elif searchVal is not None:
             cursor = connection.cursor()
-            cursor.execute("SELECT * FROM carnivalapi_employee WHERE first_name ILIKE %s", [searchVal+'%'])
+            cursor.execute("""SELECT e.*, d.business_name, et.name employee_type
+                                FROM carnivalapi_employee e
+                                INNER JOIN carnivalapi_dealership d
+                                ON e.dealership_id = d.id
+                                INNER JOIN carnivalapi_employeetype et
+                                ON e.employee_type_id = et.id
+                                WHERE e.first_name ILIKE  %s""", [searchVal+'%'])
 
             def dictfetchall(cursor):
                 "Return all rows from a cursor as a dict"
