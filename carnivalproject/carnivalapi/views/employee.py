@@ -68,11 +68,13 @@ class Employees(ViewSet):
         """
         employee = Employee.objects.get(pk=pk)
 
-        employee.first_name = request.data["firstName"]
-        employee.last_name = request.data["lastName"]
-        employee.email_address = request.data["emailAddress"]
+        employee.id = request.data["id"]
+        employee.first_name = request.data["first_name"]
+        employee.last_name = request.data["last_name"]
+        employee.email_address = request.data["email_address"]
         employee.phone = request.data["phone"]
-        employee.employee_type_id = request.data["employeeTypeId"]
+        employee.dealership_id = request.data["dealership_id"]
+        employee.employee_type_id = request.data["employee_type_id"]
 
         employee.save()
 
@@ -107,7 +109,13 @@ class Employees(ViewSet):
 
         elif searchVal is not None:
             cursor = connection.cursor()
-            cursor.execute("SELECT * FROM carnivalapi_employee WHERE first_name ILIKE %s", [searchVal+'%'])
+            cursor.execute("""SELECT e.*, d.business_name, et.name employee_type
+                                FROM carnivalapi_employee e
+                                INNER JOIN carnivalapi_dealership d
+                                ON e.dealership_id = d.id
+                                INNER JOIN carnivalapi_employeetype et
+                                ON e.employee_type_id = et.id
+                                WHERE e.first_name ILIKE  %s""", [searchVal+'%'])
 
             def dictfetchall(cursor):
                 "Return all rows from a cursor as a dict"
