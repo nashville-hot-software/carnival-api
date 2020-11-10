@@ -1,12 +1,34 @@
+# FOR POSTMAN TESTING
+        # {
+        #     "price": 25555.55,
+        #     "deposit": 5000,
+        #     "pickup_date": "2020-11-25",
+        #     "invoice_number": "543WW215JE",
+        #     "payment_method": "mastercard",
+        #     "returned": "false",
+        #     "dealership_id": "20",
+        #     "employee_id": "5",
+        #     "sales_type_id": "2",
+        #     "vehicle_id": "44",
+        #     "first_name": "Jim",
+        #     "last_name": "Rogers",
+        #     "email": "jimr@yahoo.com",
+        #     "phone": "555-555-4433",
+        #     "street": "123 main st.",
+        #     "city": "Franklin",
+        #     "state": "TN",
+        #     "zipcode": "37067",
+        #     "company_name": "landscaperz"
+        # }
+
+
 from django.http import HttpResponseServerError
 from django.db import connection
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from ..models import Sale, SaleType, SaleMetric
-# from django.db import connection
-
+from ..models import Sale, SaleType, SaleMetric, Customer
 
 class SaleSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -37,41 +59,43 @@ class Sales(ViewSet):
     def create(self, request):
 
         new_sale = Sale()
+        
         new_sale.price = request.data["price"]
         new_sale.deposit = request.data["deposit"]
-        new_sale.purchase_date = request.data["purchase_date"]
         new_sale.pickup_date = request.data["pickup_date"]
         new_sale.invoice_number = request.data["invoice_number"]
         new_sale.payment_method = request.data["payment_method"]
         new_sale.returned = request.data["returned"]
-        new_sale.customer_id = request.data["customer_id"]
         new_sale.dealership_id = request.data["dealership_id"]
         new_sale.employee_id = request.data["employee_id"]
         new_sale.sales_type_id = request.data["sales_type_id"]
         new_sale.vehicle_id = request.data["vehicle_id"]
 
-        # FOR POSTMAN TESTING
-        # {
-        #     "price": "Tester",
-        #     "deposit": "Testerrr",
-        #     "purchase_date": "tester@gmail.com",
-        #     "pickup_date": "615-555-4321",
-        #     "invoice_number": "123 Main St.",
-        #     "payment_method": "Franklin",
-        #     "returned": "TN",
-        #     "customer_id": 37067,
-        #     "dealership_id": "some company"
-        #     "employee_id": "some company"
-        #     "sales_type_id": "some company"
-        #     "vehicle_id": "some company"
-        # }
+        new_customer = Customer()
 
-        new_sale.save()
+        new_customer.first_name = request.data["first_name"]
+        new_customer.last_name = request.data["last_name"]
+        new_customer.email = request.data["email"]
+        new_customer.phone = request.data["phone"]
+        new_customer.street = request.data["street"]
+        new_customer.city = request.data["city"]
+        new_customer.state = request.data["state"]
+        new_customer.zipcode = request.data["zipcode"]
+        new_customer.company_name = request.data["company_name"]
 
-        serializer = SaleSerializer(
-            new_sale, context={'request': request})
+        if new_sale is not None:
+            cursor = connection.cursor()
+            cursor.execute("""CALL new_sale(%s, %s, %s, %s, %s, %s, %s, %s, %s,
+                                %s, %s, %s, %s, %s, %s, CURRENT_DATE, %s,
+                                %s, %s, %s);""", [new_customer.first_name, new_customer.last_name,
+                                                  new_customer.email, new_customer.phone, new_customer.street,
+                                                  new_customer.city, new_customer.state, new_customer.zipcode,
+                                                  new_customer.company_name, new_sale.sales_type_id, new_sale.employee_id,
+                                                  new_sale.dealership_id, new_sale.price, new_sale.deposit, 
+                                                  new_sale.pickup_date, new_sale.invoice_number,
+                                                  new_sale.payment_method, new_sale.returned, new_sale.vehicle_id])
 
-        return Response(serializer.data)
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
 
     def retrieve(self, request, pk=None):
 
