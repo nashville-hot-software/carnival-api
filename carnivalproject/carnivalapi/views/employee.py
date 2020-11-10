@@ -68,11 +68,13 @@ class Employees(ViewSet):
         """
         employee = Employee.objects.get(pk=pk)
 
-        employee.first_name = request.data["firstName"]
-        employee.last_name = request.data["lastName"]
-        employee.email_address = request.data["emailAddress"]
+        employee.id = request.data["id"]
+        employee.first_name = request.data["first_name"]
+        employee.last_name = request.data["last_name"]
+        employee.email_address = request.data["email_address"]
         employee.phone = request.data["phone"]
-        employee.employee_type_id = request.data["employeeTypeId"]
+        employee.dealership_id = request.data["dealership_id"]
+        employee.employee_type_id = request.data["employee_type_id"]
 
         employee.save()
 
