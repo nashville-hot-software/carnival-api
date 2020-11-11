@@ -22,7 +22,7 @@ class VehicleTypes(ViewSet):
     
         new_vehicletype = VehicleType()
 
-        new_vehicletype.body_type = request.data["bodyType"]
+        new_vehicletype.body_type = request.data["body_type"]
         new_vehicletype.make = request.data["make"]
         new_vehicletype.model = request.data["model"]
 
