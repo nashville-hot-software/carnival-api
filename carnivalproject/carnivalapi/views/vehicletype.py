@@ -28,11 +28,10 @@ class VehicleTypes(ViewSet):
 
         # FOR POSTMAN TESTING
         # {
-        #     "body_type": "BodyType"
+        #     "body_type": "Body_type"
         #     "make": "Make"
         #     "model": "Model"
         # }
-
 
         new_vehicletype.save()
 
@@ -61,7 +60,7 @@ class VehicleTypes(ViewSet):
         """
         vehicletype = VehicleType.objects.get(pk=pk)
 
-        vehicletype.body_type = request.data["bodyType"]
+        vehicletype.body_type = request.data["body_type"]
         vehicletype.make = request.data["make"]
         vehicletype.model = request.data["model"]
 
