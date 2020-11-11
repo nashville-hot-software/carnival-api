@@ -22,12 +22,12 @@ class Dealerships(ViewSet):
     
         new_dealership = Dealership()
 
-        new_dealership.business_name = request.data["businessName"]
+        new_dealership.business_name = request.data["business_name"]
         new_dealership.phone = request.data["phone"]
         new_dealership.city = request.data["city"]
         new_dealership.state = request.data["state"]
         new_dealership.website = request.data["website"]
-        new_dealership.tax_id = request.data["taxId"]
+        new_dealership.tax_id = request.data["tax_id"]
 
         # FOR POSTMAN TESTING
         # {
