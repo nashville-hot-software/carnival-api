@@ -67,12 +67,12 @@ class Dealerships(ViewSet):
         """
         dealership = Dealership.objects.get(pk=pk)
 
-        dealership.business_name = request.data["businessName"]
+        dealership.business_name = request.data["business_name"]
         dealership.phone = request.data["phone"]
         dealership.city = request.data["city"]
         dealership.state = request.data["state"]
         dealership.website = request.data["website"]
-        dealership.tax_id = request.data["taxId"]
+        dealership.tax_id = request.data["tax_id"]
 
         dealership.save()
 
