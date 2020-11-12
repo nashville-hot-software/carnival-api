@@ -123,8 +123,8 @@ class Vehicles(ViewSet):
 
         limit = self.request.query_params.get('limit')
         popular_models = self.request.query_params.get('popular_models')
-        searchVal_make = self.request.query_params.get('make')
-        searchVal_model = self.request.query_params.get('model')
+        vehicle_query = self.request.query_params.get('vehicle')
+        # searchVal_model = self.request.query_params.get('model')
 
         if popular_models is not None:
             popular_vehicles = Vehicle.objects.raw(
@@ -138,7 +138,8 @@ class Vehicles(ViewSet):
         elif limit is not None:
             vehicles = Vehicle.objects.all().order_by('-id')[:int(limit)]
         
-        elif  searchVal_make or searchVal_model is not None:
+        elif  vehicle_query is not None:
+
             cursor = connection.cursor()
             cursor.execute("""SELECT v.*,
                                 vt.make,
@@ -146,8 +147,7 @@ class Vehicles(ViewSet):
                                 vt.body_type
                                 FROM carnivalapi_vehicle v
                                 LEFT JOIN carnivalapi_vehicletype vt ON v.vehicle_type_id = vt.id
-                                WHERE vt.make ILIKE %s OR
-                                vt.model ILIKE  %s""", [searchVal_make+'%',searchVal_model+'%'])
+                                WHERE vt.make ILIKE %s OR vt.model ILIKE %s;""", [vehicle_query+'%', vehicle_query+'%'])
 
             def dictfetchall(cursor):
                 "Return all rows from a cursor as a dict"
