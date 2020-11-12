@@ -68,7 +68,6 @@ class Employees(ViewSet):
         """
         employee = Employee.objects.get(pk=pk)
 
-        employee.id = request.data["id"]
         employee.first_name = request.data["first_name"]
         employee.last_name = request.data["last_name"]
         employee.email_address = request.data["email_address"]
