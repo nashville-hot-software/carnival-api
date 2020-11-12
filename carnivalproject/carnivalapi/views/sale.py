@@ -29,6 +29,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from ..models import Sale, SaleType, SaleMetric, Customer
+import string, random
 
 class SaleSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -58,12 +59,17 @@ class Sales(ViewSet):
 
     def create(self, request):
 
+        def id_generator(size=10, chars=string.ascii_uppercase + string.digits):
+            return ''.join(random.choice(chars) for _ in range(size))
+
+        invoice_num = id_generator()
+
         new_sale = Sale()
         
         new_sale.price = request.data["price"]
         new_sale.deposit = request.data["deposit"]
         new_sale.pickup_date = request.data["pickup_date"]
-        new_sale.invoice_number = request.data["invoice_number"]
+        new_sale.invoice_number = invoice_num
         new_sale.payment_method = request.data["payment_method"]
         new_sale.returned = request.data["returned"]
         new_sale.dealership_id = request.data["dealership_id"]
