@@ -97,7 +97,13 @@ class VehicleTypes(ViewSet):
 
         elif searchVal is not None:
             cursor = connection.cursor()
-            cursor.execute("SELECT * FROM carnivalapi_vehicletype WHERE make || ' ' || model ILIKE %s", [searchVal+'%'])
+            cursor.execute("""SELECT v.*,
+                                vt.make,
+                                vt.model,
+                                vt.body_type
+                                FROM carnivalapi_vehicle v
+                                LEFT JOIN carnivalapi_vehicletype vt ON v.vehicle_type_id = vt.id
+                                WHERE vt.make ILIKE %s OR vt.model ILIKE %s;""",[searchVal+'%', searchVal+'%'])
 
             def dictfetchall(cursor):
                 "Return all rows from a cursor as a dict"
