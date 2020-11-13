@@ -1,9 +1,11 @@
 from django.db import models
 from django.urls import reverse
 from .vehicletype import VehicleType
+# from .dealership import Dealership
 
 class Vehicle(models.Model):
     
+    # dealership = models.ForeignKey(Dealership, related_name="dealership", on_delete=models.CASCADE)
     vin = models.CharField(max_length=50, null=False, default="AAAAAAAAAAAAAAA")
     engine_type = models.CharField(max_length=2, null=False, default="V6")
     vehicle_type = models.ForeignKey(VehicleType, related_name="vehicletype", on_delete=models.CASCADE)
@@ -14,7 +16,6 @@ class Vehicle(models.Model):
     miles_count = models.IntegerField(null=False, default=100)
     year_of_car = models.IntegerField(null=False, default=2020)
     is_sold = models.BooleanField(null=False, default=False)
-
     class Meta:
         verbose_name = ("Vehicle")
         verbose_name_plural = ("Vehicles")        
