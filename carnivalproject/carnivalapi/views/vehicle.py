@@ -147,7 +147,8 @@ class Vehicles(ViewSet):
                                 vt.body_type
                                 FROM carnivalapi_vehicle v
                                 LEFT JOIN carnivalapi_vehicletype vt ON v.vehicle_type_id = vt.id
-                                WHERE vt.make ILIKE %s OR vt.model ILIKE %s;""", [vehicle_query+'%', vehicle_query+'%'])
+                                WHERE (vt.make ILIKE %s OR vt.model ILIKE %s)
+                                AND v.is_sold = false;""", [vehicle_query+'%', vehicle_query+'%'])
 
             def dictfetchall(cursor):
                 "Return all rows from a cursor as a dict"
