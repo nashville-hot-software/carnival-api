@@ -6,6 +6,8 @@ from rest_framework import serializers
 from rest_framework import status
 from ..models import Vehicle, VehicleType, PopularVehicle
 from .vehicletype import VehicleTypeSerializer
+from django.db import connection
+
 
 class VehicleSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -15,10 +17,12 @@ class VehicleSerializer(serializers.HyperlinkedModelSerializer):
             view_name='Vehicles',
             lookup_field='id'
         )
-        fields = ('id', 'vin', 'engine_type', 'vehicle_type', 'exterior_color', 'interior_color', 'floor_price', 'msr_price', 'miles_count', 'year_of_car', 'is_sold', 'vehicle_type_id')
+        fields = ('id', 'vin', 'engine_type', 'vehicle_type', 'exterior_color', 'interior_color',
+                  'floor_price', 'msr_price', 'miles_count', 'year_of_car', 'is_sold', 'vehicle_type_id')
 
         depth = 1
-        
+
+
 class PopularVehicleSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
@@ -29,10 +33,11 @@ class PopularVehicleSerializer(serializers.HyperlinkedModelSerializer):
         )
         fields = ('id', 'vehicles_sold', 'make', 'model')
 
+
 class Vehicles(ViewSet):
 
     def create(self, request):
-    
+
         new_vehicle = Vehicle()
 
         new_vehicle.vin = request.data["vin"]
@@ -45,7 +50,7 @@ class Vehicles(ViewSet):
         new_vehicle.year_of_car = request.data["year_of_car"]
         new_vehicle.is_sold = request.data["is_sold"]
         new_vehicle.vehicle_type_id = request.data["vehicle_type_id"]
-        
+
         # FOR POSTMAN TESTING
         # {
         #     "vin": "1234VV7JCW910",
@@ -59,7 +64,6 @@ class Vehicles(ViewSet):
         #     "is_sold": false,
         #     "vehicle_type_id": 1,
         # }
-
 
         new_vehicle.save()
 
@@ -89,7 +93,7 @@ class Vehicles(ViewSet):
         vehicle = Vehicle.objects.get(pk=pk)
 
         vehicle.name = request.data["name"]
-        
+
         vehicle.save()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
@@ -114,15 +118,18 @@ class Vehicles(ViewSet):
     def list(self, request):
 
         vehicles = Vehicle.objects.all()
-        popular_vehicles = Vehicle.objects.raw('select * from popular_vehicles;')
+        popular_vehicles = Vehicle.objects.raw(
+            'select * from popular_vehicles;')
 
         limit = self.request.query_params.get('limit')
         popular_models = self.request.query_params.get('popular_models')
-        
+        vehicle_query = self.request.query_params.get('vehicle')
+        # searchVal_model = self.request.query_params.get('model')
 
         if popular_models is not None:
-            popular_vehicles = Vehicle.objects.raw('select * from popular_vehicles;')
-            
+            popular_vehicles = Vehicle.objects.raw(
+                'select * from popular_vehicles;')
+
             serializer = PopularVehicleSerializer(
             popular_vehicles, many=True, context={'request': request})
 
@@ -131,6 +138,27 @@ class Vehicles(ViewSet):
         elif limit is not None:
             vehicles = Vehicle.objects.all().order_by('-id')[:int(limit)]
         
+        elif  vehicle_query is not None:
+
+            cursor = connection.cursor()
+            cursor.execute("""SELECT v.*,
+                                vt.make,
+                                vt.model,
+                                vt.body_type
+                                FROM carnivalapi_vehicle v
+                                LEFT JOIN carnivalapi_vehicletype vt ON v.vehicle_type_id = vt.id
+                                WHERE (vt.make ILIKE %s OR vt.model ILIKE %s)
+                                AND v.is_sold = false;""", [vehicle_query+'%', vehicle_query+'%'])
+
+            def dictfetchall(cursor):
+                "Return all rows from a cursor as a dict"
+                columns = [col[0] for col in cursor.description]
+                return [
+                    dict(zip(columns, row))
+                    for row in cursor.fetchall()
+                ]
+
+            return Response(dictfetchall(cursor))
 
         serializer = VehicleSerializer(
             vehicles, many=True, context={'request': request})

@@ -29,6 +29,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from ..models import Sale, SaleType, SaleMetric, Customer
+import string, random
 
 class SaleSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -58,12 +59,17 @@ class Sales(ViewSet):
 
     def create(self, request):
 
+        def id_generator(size=10, chars=string.ascii_uppercase + string.digits):
+            return ''.join(random.choice(chars) for _ in range(size))
+
+        invoice_num = id_generator()
+
         new_sale = Sale()
         
         new_sale.price = request.data["price"]
         new_sale.deposit = request.data["deposit"]
         new_sale.pickup_date = request.data["pickup_date"]
-        new_sale.invoice_number = request.data["invoice_number"]
+        new_sale.invoice_number = invoice_num
         new_sale.payment_method = request.data["payment_method"]
         new_sale.returned = request.data["returned"]
         new_sale.dealership_id = request.data["dealership_id"]
@@ -83,11 +89,13 @@ class Sales(ViewSet):
         new_customer.zipcode = request.data["zipcode"]
         new_customer.company_name = request.data["company_name"]
 
+        print(f'XXXXXX {new_sale.invoice_number} {new_sale.vehicle_id} XXXXXXX')
+
         if new_sale is not None:
             cursor = connection.cursor()
             cursor.execute("""CALL new_sale(%s, %s, %s, %s, %s, %s, %s, %s, %s,
-                                %s, %s, %s, %s, %s, %s, CURRENT_DATE, %s,
-                                %s, %s, %s);""", [new_customer.first_name, new_customer.last_name,
+                                %s, %s, %s, %s, %s, CURRENT_DATE, %s, %s,
+                                %s, %s, %s)""", [new_customer.first_name, new_customer.last_name,
                                                   new_customer.email, new_customer.phone, new_customer.street,
                                                   new_customer.city, new_customer.state, new_customer.zipcode,
                                                   new_customer.company_name, new_sale.sales_type_id, new_sale.employee_id,
