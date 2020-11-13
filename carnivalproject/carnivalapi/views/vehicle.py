@@ -4,7 +4,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from ..models import Vehicle, VehicleType, PopularVehicle
+from ..models import Vehicle, VehicleType
 from .vehicletype import VehicleTypeSerializer
 from django.db import connection
 
@@ -23,15 +23,15 @@ class VehicleSerializer(serializers.HyperlinkedModelSerializer):
         depth = 1
 
 
-class PopularVehicleSerializer(serializers.HyperlinkedModelSerializer):
+# class PopularVehicleSerializer(serializers.HyperlinkedModelSerializer):
 
-    class Meta:
-        model = PopularVehicle
-        url = serializers.HyperlinkedIdentityField(
-            view_name='PopularVehicle',
-            lookup_field='id'
-        )
-        fields = ('id', 'vehicles_sold', 'make', 'model')
+#     class Meta:
+#         model = PopularVehicle
+#         url = serializers.HyperlinkedIdentityField(
+#             view_name='PopularVehicle',
+#             lookup_field='id'
+#         )
+#         fields = ('id', 'vehicles_sold', 'make', 'model')
 
 
 class Vehicles(ViewSet):
@@ -118,22 +118,24 @@ class Vehicles(ViewSet):
     def list(self, request):
 
         vehicles = Vehicle.objects.all()
-        popular_vehicles = Vehicle.objects.raw(
-            'select * from popular_vehicles;')
-
         limit = self.request.query_params.get('limit')
         popular_models = self.request.query_params.get('popular_models')
         vehicle_query = self.request.query_params.get('vehicle')
         # searchVal_model = self.request.query_params.get('model')
 
         if popular_models is not None:
-            popular_vehicles = Vehicle.objects.raw(
-                'select * from popular_vehicles;')
+            cursor = connection.cursor()
+            cursor.execute('select * from popular_vehicles;')
 
-            serializer = PopularVehicleSerializer(
-            popular_vehicles, many=True, context={'request': request})
+            def dictfetchall(cursor):
+                    "Return all rows from a cursor as a dict"
+                    columns = [col[0] for col in cursor.description]
+                    return [
+                        dict(zip(columns, row))
+                        for row in cursor.fetchall()
+                    ]
 
-            return Response(serializer.data)
+            return Response(dictfetchall(cursor))
 
         elif limit is not None:
             vehicles = Vehicle.objects.all().order_by('-id')[:int(limit)]
