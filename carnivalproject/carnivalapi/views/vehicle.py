@@ -36,6 +36,9 @@ class VehicleSerializer(serializers.HyperlinkedModelSerializer):
 
 class Vehicles(ViewSet):
 
+    def id_generator(size=10, chars=string.asciiuppercase + string.digits):
+            return ''.join(random.choice(chars) for  in range(size))
+
     def create(self, request):
 
         new_vehicle = Vehicle()

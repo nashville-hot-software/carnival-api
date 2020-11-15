@@ -90,7 +90,7 @@ class VehicleTypes(ViewSet):
         vehicletype = VehicleType.objects.all()
 
         limit = self.request.query_params.get('limit')
-        searchVal = self.request.query_params.get('searchTerm')
+        # searchVal = self.request.query_params.get('searchTerm')
         searchValVT = self.request.query_params.get('searchTermVT')
 
         if limit is not None:
