@@ -92,7 +92,16 @@ class Vehicles(ViewSet):
         """
         vehicle = Vehicle.objects.get(pk=pk)
 
-        vehicle.name = request.data["name"]
+        vehicle.vin = request.data["vin"]
+        vehicle.engine_type = request.data["engine_type"]
+        vehicle.exterior_color = request.data["exterior_color"]
+        vehicle.interior_color = request.data["interior_color"]
+        vehicle.floor_price = request.data["floor_price"]
+        vehicle.msr_price = request.data["msr_price"]
+        vehicle.miles_count = request.data["miles_count"]
+        vehicle.year_of_car = request.data["year_of_car"]
+        vehicle.is_sold = request.data["is_sold"]
+        vehicle.vehicle_type_id = request.data["vehicle_type_id"]
 
         vehicle.save()
 
