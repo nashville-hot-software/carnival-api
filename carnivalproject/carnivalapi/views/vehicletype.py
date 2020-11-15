@@ -91,6 +91,7 @@ class VehicleTypes(ViewSet):
 
         limit = self.request.query_params.get('limit')
         searchVal = self.request.query_params.get('searchTerm')
+        searchValVT = self.request.query_params.get('searchTermVT')
 
         if limit is not None:
             vehicletype = VehicleType.objects.all()[:int(limit)]
@@ -104,6 +105,10 @@ class VehicleTypes(ViewSet):
                                 FROM carnivalapi_vehicle v
                                 LEFT JOIN carnivalapi_vehicletype vt ON v.vehicle_type_id = vt.id
                                 WHERE vt.make ILIKE %s OR vt.model ILIKE %s;""",[searchVal+'%', searchVal+'%'])
+
+        elif searchValVT is not None:
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM carnivalapi_vehicletype WHERE make ILIKE %s OR model ILIKE %s", [searchValVT+'%', searchValVT+'%'])
 
             def dictfetchall(cursor):
                 "Return all rows from a cursor as a dict"
