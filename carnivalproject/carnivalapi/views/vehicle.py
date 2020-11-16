@@ -7,6 +7,8 @@ from rest_framework import status
 from ..models import Vehicle, VehicleType
 from .vehicletype import VehicleTypeSerializer
 from django.db import connection
+import string
+import random
 
 
 class VehicleSerializer(serializers.HyperlinkedModelSerializer):
@@ -38,9 +40,14 @@ class Vehicles(ViewSet):
 
     def create(self, request):
 
+        def id_generator(size=10, chars=string.ascii_uppercase + string.digits):
+            return ''.join(random.choice(chars) for _ in range(size))
+
+        vin = id_generator()
+
         new_vehicle = Vehicle()
 
-        new_vehicle.vin = request.data["vin"]
+        new_vehicle.vin = vin
         new_vehicle.engine_type = request.data["engine_type"]
         new_vehicle.exterior_color = request.data["exterior_color"]
         new_vehicle.interior_color = request.data["interior_color"]
@@ -92,7 +99,16 @@ class Vehicles(ViewSet):
         """
         vehicle = Vehicle.objects.get(pk=pk)
 
-        vehicle.name = request.data["name"]
+        # vehicle.vin = request.data["vin"]
+        vehicle.engine_type = request.data["engine_type"]
+        vehicle.exterior_color = request.data["exterior_color"]
+        vehicle.interior_color = request.data["interior_color"]
+        vehicle.floor_price = request.data["floor_price"]
+        vehicle.msr_price = request.data["msr_price"]
+        vehicle.miles_count = request.data["miles_count"]
+        vehicle.year_of_car = request.data["year_of_car"]
+        vehicle.is_sold = request.data["is_sold"]
+        vehicle.vehicle_type_id = request.data["vehicle_type_id"]
 
         vehicle.save()
 

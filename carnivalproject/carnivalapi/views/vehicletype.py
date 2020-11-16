@@ -90,21 +90,21 @@ class VehicleTypes(ViewSet):
         vehicletype = VehicleType.objects.all()
 
         limit = self.request.query_params.get('limit')
-        searchVal = self.request.query_params.get('searchTerm')
+        # searchVal = self.request.query_params.get('searchTerm')
         searchValVT = self.request.query_params.get('searchTermVT')
 
         if limit is not None:
             vehicletype = VehicleType.objects.all()[:int(limit)]
 
-        elif searchVal is not None:
-            cursor = connection.cursor()
-            cursor.execute("""SELECT v.*,
-                                vt.make,
-                                vt.model,
-                                vt.body_type
-                                FROM carnivalapi_vehicle v
-                                LEFT JOIN carnivalapi_vehicletype vt ON v.vehicle_type_id = vt.id
-                                WHERE vt.make ILIKE %s OR vt.model ILIKE %s;""",[searchVal+'%', searchVal+'%'])
+        # elif searchVal is not None:
+        #     cursor = connection.cursor()
+        #     cursor.execute("""SELECT v.*,
+        #                         vt.make,
+        #                         vt.model,
+        #                         vt.body_type
+        #                         FROM carnivalapi_vehicle v
+        #                         LEFT JOIN carnivalapi_vehicletype vt ON v.vehicle_type_id = vt.id
+        #                         WHERE vt.make ILIKE %s OR vt.model ILIKE %s;""",[searchVal+'%', searchVal+'%'])
 
         elif searchValVT is not None:
             cursor = connection.cursor()
