@@ -41,7 +41,7 @@ class SaleSerializer(serializers.HyperlinkedModelSerializer):
             view_name='sale',
             lookup_field='id'
         )
-        fields = ('id', 'sales_type', 'vehicle', 'employee', 'customer', 'dealership', 'price',
+        fields = ('id', 'sales_type', 'vehicle', 'employee', 'customer', 'customer_id', 'dealership', 'price',
                   'deposit', 'purchase_date', 'pickup_date', 'invoice_number', 'payment_method', 'returned')
         depth = 2
 
@@ -50,7 +50,7 @@ class Sales(ViewSet):
 
     def create(self, request):
 
-        def id_generator(size=10, chars=string.ascii_uppercase + string.digits):
+        def id_generator(size=10, chars=string.digits):
             return ''.join(random.choice(chars) for _ in range(size))
 
         invoice_num = id_generator()

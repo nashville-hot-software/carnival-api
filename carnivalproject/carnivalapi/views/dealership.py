@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from ..models import Dealership
+from faker import Faker
 
 class DealershipSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -19,6 +20,8 @@ class DealershipSerializer(serializers.HyperlinkedModelSerializer):
 class Dealerships(ViewSet):
 
     def create(self, request):
+
+        fake = Faker()
     
         new_dealership = Dealership()
 
@@ -27,7 +30,7 @@ class Dealerships(ViewSet):
         new_dealership.city = request.data["city"]
         new_dealership.state = request.data["state"]
         new_dealership.website = request.data["website"]
-        new_dealership.tax_id = request.data["tax_id"]
+        new_dealership.tax_id = fake.pystr_format(string_format='??-###-#?-?#?#').lower()
 
         # FOR POSTMAN TESTING
         # {
