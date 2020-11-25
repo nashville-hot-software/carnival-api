@@ -100,15 +100,24 @@ class Sales(ViewSet):
     def retrieve(self, request, pk=None):
 
         try:
-            sale = Sale.objects.get(pk=pk)
+            cursor = connection.cursor()
+            cursor.execute("""SELECT * FROM one_sale_with_one_customer(%s)""",[pk])
+
+            
 
             # cursor = connection.cursor()
             # cursor.execute('''SELECT count(*) FROM people_person''')
 
-            serializer = SaleSerializer(
-                sale, context={'request': request})
+            def dictfetchall(cursor):
+                "Return all rows from a cursor as a dict"
+                columns = [col[0] for col in cursor.description]
+                return [
+                    dict(zip(columns, row))
+                    for row in cursor.fetchall()
+                ]
 
-            return Response(serializer.data)
+            return Response(dictfetchall(cursor))
+
 
         except Exception as ex:
             return HttpResponseServerError(ex)
