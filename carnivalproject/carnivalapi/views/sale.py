@@ -153,7 +153,7 @@ class Sales(ViewSet):
 
     def list(self, request):
 
-        recent_sales = Sale.objects.raw('select * from recent_sales;')
+        recent_sales = Sale.objects.raw('select * from one_month_sales;')
 
         limit = self.request.query_params.get('limit')
         sale_count = self.request.query_params.get('sale_count')
