@@ -127,21 +127,55 @@ class Sales(ViewSet):
         Returns:
             Response -- Empty body with 204 status code
         """
-        sale = Sale.objects.get(pk=pk)
+        edited_sale = Sale()
+        edited_sale.id = request.data["id"]
+        edited_sale.price = request.data["price"]
+        edited_sale.deposit = request.data["deposit"]
+        edited_sale.pickup_date = request.data["pickup_date"]
+        edited_sale.purchase_date = request.data["purchase_date"]
+        edited_sale.payment_method = request.data["payment_method"]
+        edited_sale.returned = request.data["returned"]
+        edited_sale.sales_type_id = request.data["sales_type_id"]
+        edited_sale.customer_Id = request.data["customer_id"]
+        edited_sale.first_name = request.data["first_name"]
+        edited_sale.last_name = request.data["last_name"]
+        edited_sale.email = request.data["email"]
+        edited_sale.phone = request.data["phone"]
+        edited_sale.street = request.data["street"]
+        edited_sale.city = request.data["city"]
+        edited_sale.state = request.data["state"]
+        edited_sale.zipcode = request.data["zipcode"]
+        edited_sale.company_name = request.data["company_name"]
 
-        sale.first_name = request.data["firstName"]
-        sale.last_name = request.data["lastName"]
-        sale.email = request.data["email"]
-        sale.phone = request.data["phone"]
-        sale.street = request.data["street"]
-        sale.city = request.data["city"]
-        sale.state = request.data["state"]
-        sale.zipcode = request.data["zipcode"]
-        sale.company_name = request.data["companyName"]
-
-        sale.save()
-
-        return Response({}, status=status.HTTP_204_NO_CONTENT)
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM one_sale_with_one_customer(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+        [edited_sale.id,
+        edited_sale.price,
+        edited_sale.deposit,
+        edited_sale.pickup_date,
+        edited_sale.purchase_date,
+        edited_sale.payment_method,
+        edited_sale.returned,
+        edited_sale.sales_type_id,
+        edited_sale.customer_id,
+        edited_sale.first_name,
+        edited_sale.last_name,
+        edited_sale.email,
+        edited_sale.phone,
+        edited_sale.street,
+        edited_sale.city,
+        edited_sale.state,
+        edited_sale.zipcode,
+        edited_sale.company_name
+        ])
+        def dictfetchall(cursor):
+            "Return all rows from a cursor as a dict"
+            columns = [col[0] for col in cursor.description]
+            return [
+                dict(zip(columns, row))
+                for row in cursor.fetchall()
+            ]
+        return Response(dictfetchall(cursor))
 
     def destroy(self, request, pk=None):
         """Handle DELETE requests for a single frend
