@@ -150,13 +150,6 @@ class Sales(ViewSet):
         cursor = connection.cursor()
         cursor.execute("CALL update_sale_and_customer(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
         [edited_sale.id,
-        edited_sale.price,
-        edited_sale.deposit,
-        edited_sale.pickup_date,
-        edited_sale.purchase_date,
-        edited_sale.payment_method,
-        edited_sale.returned,
-        edited_sale.sales_type_id,
         edited_sale.customer_id,
         edited_sale.first_name,
         edited_sale.last_name,
@@ -166,7 +159,14 @@ class Sales(ViewSet):
         edited_sale.city,
         edited_sale.state,
         edited_sale.zipcode,
-        edited_sale.company_name
+        edited_sale.company_name,
+        edited_sale.sales_type_id,
+        edited_sale.price,
+        edited_sale.deposit,
+        edited_sale.purchase_date,
+        edited_sale.pickup_date,
+        edited_sale.payment_method,
+        edited_sale.returned
         ])
         def dictfetchall(cursor):
             "Return all rows from a cursor as a dict"
@@ -175,7 +175,8 @@ class Sales(ViewSet):
                 dict(zip(columns, row))
                 for row in cursor.fetchall()
             ]
-        return Response(dictfetchall(cursor))
+        # return Response(dictfetchall(cursor))
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
 
     def destroy(self, request, pk=None):
         """Handle DELETE requests for a single frend
