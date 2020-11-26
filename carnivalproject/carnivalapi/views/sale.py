@@ -148,7 +148,7 @@ class Sales(ViewSet):
         edited_sale.company_name = request.data["company_name"]
 
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM one_sale_with_one_customer(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+        cursor.execute("CALL update_sale_and_customer(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
         [edited_sale.id,
         edited_sale.price,
         edited_sale.deposit,
