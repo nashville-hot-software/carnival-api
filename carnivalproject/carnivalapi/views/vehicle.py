@@ -138,10 +138,26 @@ class Vehicles(ViewSet):
         popular_models = self.request.query_params.get('popular_models')
         vehicle_query = self.request.query_params.get('vehicle')
         # searchVal_model = self.request.query_params.get('model')
+        vehicle_type_id = self.request.query_params.get('vehicle_type')
 
+        
         if popular_models is not None:
             cursor = connection.cursor()
             cursor.execute('select * from popular_vehicles;')
+
+            def dictfetchall(cursor):
+                    "Return all rows from a cursor as a dict"
+                    columns = [col[0] for col in cursor.description]
+                    return [
+                        dict(zip(columns, row))
+                        for row in cursor.fetchall()
+                    ]
+
+            return Response(dictfetchall(cursor))
+
+        elif vehicle_type_id is not None:
+            cursor = connection.cursor()
+            cursor.execute('select * from fetch_one_vehicle(%s);', [vehicle_type_id])
 
             def dictfetchall(cursor):
                     "Return all rows from a cursor as a dict"
