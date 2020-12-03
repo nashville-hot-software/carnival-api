@@ -136,7 +136,7 @@ class Sales(ViewSet):
         edited_sale.payment_method = request.data["payment_method"]
         edited_sale.returned = request.data["returned"]
         edited_sale.sales_type_id = request.data["sales_type_id"]
-        edited_sale.customer_Id = request.data["customer_id"]
+        edited_sale.customer_id = request.data["customer_id"]
         edited_sale.first_name = request.data["first_name"]
         edited_sale.last_name = request.data["last_name"]
         edited_sale.email = request.data["email"]
