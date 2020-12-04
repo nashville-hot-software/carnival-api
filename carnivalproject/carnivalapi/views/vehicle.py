@@ -99,17 +99,10 @@ class Vehicles(ViewSet):
         """
         vehicle = Vehicle.objects.get(pk=pk)
 
-        # vehicle.vin = request.data["vin"]
-        vehicle.engine_type = request.data["engine_type"]
+        vehicle.miles_count = request.data["miles_count"]
         vehicle.exterior_color = request.data["exterior_color"]
         vehicle.interior_color = request.data["interior_color"]
-        vehicle.floor_price = request.data["floor_price"]
-        vehicle.msr_price = request.data["msr_price"]
-        vehicle.miles_count = request.data["miles_count"]
-        vehicle.year_of_car = request.data["year_of_car"]
-        vehicle.is_sold = request.data["is_sold"]
-        vehicle.vehicle_type_id = request.data["vehicle_type_id"]
-
+        
         vehicle.save()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
@@ -138,10 +131,26 @@ class Vehicles(ViewSet):
         popular_models = self.request.query_params.get('popular_models')
         vehicle_query = self.request.query_params.get('vehicle')
         # searchVal_model = self.request.query_params.get('model')
+        vehicle_type_id = self.request.query_params.get('vehicle_type')
 
+        
         if popular_models is not None:
             cursor = connection.cursor()
             cursor.execute('select * from popular_vehicles;')
+
+            def dictfetchall(cursor):
+                    "Return all rows from a cursor as a dict"
+                    columns = [col[0] for col in cursor.description]
+                    return [
+                        dict(zip(columns, row))
+                        for row in cursor.fetchall()
+                    ]
+
+            return Response(dictfetchall(cursor))
+
+        elif vehicle_type_id is not None:
+            cursor = connection.cursor()
+            cursor.execute('select * from fetch_one_vehicle(%s);', [vehicle_type_id])
 
             def dictfetchall(cursor):
                     "Return all rows from a cursor as a dict"
