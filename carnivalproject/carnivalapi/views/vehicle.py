@@ -99,6 +99,7 @@ class Vehicles(ViewSet):
         """
         vehicle = Vehicle.objects.get(pk=pk)
 
+        vehicle.miles_count = request.data["miles_count"]
         vehicle.exterior_color = request.data["exterior_color"]
         vehicle.interior_color = request.data["interior_color"]
         
